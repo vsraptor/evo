@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 #all characters available for building our strings
 CHARS = [ *('a' .. 'z'), *('A' .. 'Z'), ' ']
 
@@ -63,7 +65,7 @@ class Evo
 
 	def add2pool str
 		f = fitness @target, str
-		@pool.push Hash[ :data => str, :fitness => f ]
+		@pool.push( { data: str, fitness: f } )
 	end
 
 	def gen_pool len
@@ -92,14 +94,26 @@ class Evo
 		return pidx1,pidx2
 	end
 
+	def select mutated
+		fit_score = fitness @target, mutated
+		#die off, replace the worse parent with the child (if better)
+		if @pool[0][:fitness] > fit_score
+			@pool[0] = { data: mutated, fitness: fit_score }
+		end
+	end
+
 	def evolve
 		#insure that pool is sorted
 		@pool.sort_by! { |e| -e[:fitness] } #reverse order by fitness
-		parent1, parent2 = pick_parents
 		#did we find match
 		return true if @pool[0][:fitness] == 0
+
+		### CROSSOVER ###
+		parent1, parent2 = pick_parents
 		#the pool is sorted, worse -to-> good
 		child = mate @pool[parent1][:data], @pool[parent2][:data]
+
+		### MUTATION ###
 		#pick different mutation methods
 		if @mutation == :basic
 			mutated = mutate child
@@ -107,11 +121,9 @@ class Evo
 			mutated = mutate4target child, @target
 		end
 		#puts "ev> " + @pool[parent1][:data] + " : " + @pool[parent2][:data] + ' = ' + mutated
-		fit_score = fitness @target, mutated
-		#die off, replace the worse parent with the child (if better)
-		if @pool[0][:fitness] > fit_score
-			@pool[0] = Hash[:data => mutated, :fitness => fit_score ]
-		end
+
+		### SELECTION ###
+		select mutated
 
 		return false
 	end
