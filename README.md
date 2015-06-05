@@ -19,7 +19,7 @@ I have planned more elaborate and interesting examples.
 3. Mutate the child-string
 4. Rinse and repeat until the process produces a match.
 
-Important :
+##### Important :
 ```
 def rand_parent range; ((rand * rand) * range).to_i end
 ```
