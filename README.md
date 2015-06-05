@@ -26,5 +26,5 @@ def rand_parent range; ((rand * rand) * range).to_i end
 
 guarantees that parents with lower fitness will be picked (pool is sorted higher --> lower fitness).
 
-Multiplying rand * rand, will on average pick number closer to 1 rather than 0 i.e. because pool is SORTED h-to-l, lower fittness wins.
+Multiplying (rand * rand), will on average pick number closer to 1 rather than 0 i.e. because pool is SORTED h-to-l, lower fittness wins.
 
