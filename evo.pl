@@ -111,7 +111,7 @@ sub pick_parents {
 }
 
 
-sub selection {
+sub replace {
 	my ($self,$mutated) = @_;
 	#pick who will die, prefably the one furthest away
 	my $die_idx = $$self{sorted_idxs}[0]; #max distance idx
@@ -128,16 +128,17 @@ sub evolve {
 	#found it
 	return 1 if $$self{pool}[ $$self{sorted_idx}[-1] ]{fitness} == 0;
 
-	### CROSSOVER ###
+	### SELECTION ###
 	my ($pidx1,$pidx2) = $self->pick_parents();#find candidates for sex
+
+	### CROSSOVER ###
 	my $child = mate $$self{pool}[$pidx1]{data}, $$self{pool}[$pidx2]{data};
 
 	### MUTATION ###
 	my $mutated = mutate $child; #now introduce a mutation
 	#say "ev> " . $$self{pool}[$pidx1]{data} . ' : ' . $$self{pool}[$pidx2]{data} . ' = ' . $mutated;
 
-	### SELECTION ###
-	$self->selection($mutated);
+	$self->replace($mutated);
 
 	return 0 #have not reached the target
 }
@@ -155,7 +156,6 @@ sub iterate {
 	$$self{iterations} = $$self{steps};
 	return 0
 }
-
 
 
 package main;

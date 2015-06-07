@@ -20,14 +20,11 @@ I have planned more elaborate and interesting examples in the future.
 #### Algorithm
 
 0. Check if we have found a match. If yes then end the evolution cycle.
-1. **CROSSOVER**
-  - Pick two random parents (with tendency for ones that are closer to the target, better fitness score)
-  - Mate and produce a child
-2. **MUTATION**
-  - Mutate the child-string
-3. **SELECTION** (by fitness score)
-  - If child is better than the worse parent, then parent dies, child takes its place in the pool
-4. Rinse and repeat until the process produces a match.
+1. **SELECTION** : Pick two random parents (with tendency for ones that are closer to the target, better fitness score)
+2. **CROSSOVER** : Mate and produce a child
+4. **MUTATION**  : Mutate the child-string
+5. If child is better than the worse parent, then parent dies, child takes its place in the pool
+6. Rinse and repeat until the process produces a match.
 
 -----
 

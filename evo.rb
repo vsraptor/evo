@@ -94,7 +94,7 @@ class Evo
 		return pidx1,pidx2
 	end
 
-	def select mutated
+	def replace mutated
 		fit_score = fitness @target, mutated
 		#die off, replace the worse parent with the child (if better)
 		if @pool[0][:fitness] > fit_score
@@ -108,8 +108,10 @@ class Evo
 		#did we find match
 		return true if @pool[0][:fitness] == 0
 
-		### CROSSOVER ###
+		### SELECTION ###
 		parent1, parent2 = pick_parents
+
+		### CROSSOVER ###
 		#the pool is sorted, worse -to-> good
 		child = mate @pool[parent1][:data], @pool[parent2][:data]
 
@@ -122,8 +124,7 @@ class Evo
 		end
 		#puts "ev> " + @pool[parent1][:data] + " : " + @pool[parent2][:data] + ' = ' + mutated
 
-		### SELECTION ###
-		select mutated
+		replace mutated
 
 		return false
 	end
