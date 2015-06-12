@@ -71,7 +71,6 @@ In tsp_test.rb uncomment loop_over() statements to see the two examples with USA
 
 **TODO:** draw the paths, so we can visually see what is the solution.
 
-**Observations:** When I increase the gene pool it seems that the solution becomes worse. The reason I think is that now you need to increase the number
-of iterations to achieve similar results. Smaller number of genes will search trough smaller and more narrow part of the whole search space.
+**Observations:** When I increase the gene pool it seems that the solution becomes worse. The reason I think is that now I need to increase the number of iterations to achieve similar results. Smaller number of genes will search trough smaller and more narrow part of the whole search space.
 That can be both good or bad.
 
