@@ -164,7 +164,7 @@ class TSP
 		return pidx1,pidx2
 	end
 
-	def replace mutated
+	def live_or_die mutated
 		fit_score = fitness mutated
 
 		#die off, replace the worse parent with the child (if better)
@@ -173,7 +173,7 @@ class TSP
 		end
 	end
 
-	def evolve iter
+	def evolve
 		#insure that pool is sorted, higher -> lower
 		@pool.sort_by! { |e| -e[:fitness] } #reverse order by fitness
 
@@ -181,17 +181,12 @@ class TSP
 		parent1, parent2 = pick_parents
 
 		### CROSSOVER ###
-		#the pool is sorted, worse -to-> good
 		child = mate @pool[parent1][:data], @pool[parent2][:data]
 
 		### MUTATION ###
 		mutated = mutate child
 
-		if not @display_every.zero?
-			display_pool if iter % @display_every == 0
-		end
-
-		replace mutated
+		live_or_die mutated
 
 	end
 
@@ -199,7 +194,10 @@ class TSP
 		raise "Please generate gene pool first" if @pool.size == 0
 		raise "Please generate or provide city list" if @cities.size == 0
 		for i in 1 .. iterations
-			evolve i
+			evolve
+			if not @display_every.zero?
+				display_pool if iter % @display_every == 0
+			end
 		end
 	end
 
