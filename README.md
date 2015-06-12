@@ -37,6 +37,7 @@ guarantees that parents with lower fitness will be picked (pool is sorted higher
 
 > Multiplying (rand * rand), will on average pick number closer to 1 rather than 0 i.e. because pool is SORTED h-to-l, lower fittness wins.
 
+-----
 
 ### Example 2 : Traveling salesman problem (tsp.rb, tsp_test.rb)
 
