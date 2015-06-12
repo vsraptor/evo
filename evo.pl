@@ -123,10 +123,7 @@ sub replace {
 }
 
 sub evolve {
-	my ($self, $idx) = @_;
-
-	#found it
-	return 1 if $$self{pool}[ $$self{sorted_idx}[-1] ]{fitness} == 0;
+	my ($self, $iter) = @_;
 
 	### SELECTION ###
 	my ($pidx1,$pidx2) = $self->pick_parents();#find candidates for sex
@@ -140,15 +137,18 @@ sub evolve {
 
 	$self->replace($mutated);
 
+	#found it
+	return 1 if $$self{pool}[ $$self{sorted_idx}[0] ]{fitness} == 0;
+
 	return 0 #have not reached the target
 }
 
 sub iterate {
 	my $self = shift;
 	for my $iter (0 .. $$self{steps}) {
-		#say "--> $iter";
 		if ( $self->evolve ) {
 			$$self{iterations} = $iter;
+
 			return 1;
 		}
 		$self->display_pool if $iter % $$self{display_every} == 0;

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-#all characters available for building our strings
+#all characters available for building our strings (alleles)
 CHARS = [ *('a' .. 'z'), *('A' .. 'Z'), ' ']
 
 def random_char
@@ -46,7 +46,7 @@ def mate str1, str2
 	start = rand(str1.size-1)
 	stop  = rand(str1.size-1)
 	start,stop = stop,start	if start > stop
-	new_str[start,stop] = str2[start,stop]
+	new_str[start .. stop] = str2[start .. stop]
 	return new_str
 end
 
@@ -105,8 +105,6 @@ class Evo
 	def evolve
 		#insure that pool is sorted
 		@pool.sort_by! { |e| -e[:fitness] } #reverse order by fitness
-		#did we find match
-		return true if @pool[0][:fitness] == 0
 
 		### SELECTION ###
 		parent1, parent2 = pick_parents
@@ -126,26 +124,30 @@ class Evo
 
 		replace mutated
 
+		#did the kid match the target
+		return true if @pool[0][:fitness] == 0
+
 		return false
 	end
 
 	def iterate
 		raise "Please generate gene pool first" if @pool.size == 0
 		for i in 1 .. @iterations
-			#puts ">#{i}"
+			display_pool  if i % @display_every == 0
 			if evolve
 				@found_at = i
+				display_pool
 				return i
 			end
-			display_pool if i % @display_every == 0
+
 		end
 		return false
 	end
 
 end
 
-e = Evo.new(target = 'hello', iterations: 9000, display_every: 100, mutation_variation: 1)
-e.gen_pool 20
+e = Evo.new(target = 'hello world', iterations: 10000, display_every: 200, mutation_variation: 1)
+e.gen_pool 10
 e.display_pool
 
 at = e.iterate
