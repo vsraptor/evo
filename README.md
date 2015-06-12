@@ -50,20 +50,20 @@ The number of possible paths are (N-1)! and if you don't count reverse paths the
 
 If we quickly do the math for different number of cities (using the second formula) :
 
-	- 10 cities = 181_440 non-duplicate paths
-	- 20 cities = ~ 6 * 10^16 paths i.e. ~60 quadrillion
-	- 30 cities = ~ 4.4 * 10^30, no idea what number this is
-	- 70 cities = ~ 1 Gogol paths
+- 10 cities = 181_440 non-duplicate paths
+- 20 cities = ~ 6 * 10^16 paths i.e. ~60 quadrillion
+- 30 cities = ~ 4.4 * 10^30, no idea what number this is
+- 70 cities = ~ 1 Gogol paths
 
 Now that sucks. But we can use Genetic/Evolution algorithm to find may be not the best but somewhat optimal solution, with much less computational resources.
 The code structure is almost the same as the one we used for String-target example. We again use Character-encoding, which is convenient :).
 
 The main differences are the following :
 
-	1. There is no TARGET we try to find, we just search thought this humongous search space guided only by the fitness function.
-	2. Fitness function is the primary tool by which we direct the algorithm by calculating the distance between cities. Shortest path wins.
-	3. Mutation just swaps two characters (instead of introducing new character : Example 1). The reason is that there can't be duplicate cities in the path.
-	4. Crossover picks part of the path from the first path and then selects cities from the second, again no duplicates allowed.
+1. There is no TARGET we try to find, we just search thought this humongous search space guided only by the fitness function.
+2. Fitness function is the primary tool by which we direct the algorithm by calculating the distance between cities. Shortest path wins.
+3. Mutation just swaps two characters (instead of introducing new character : Example 1). The reason is that there can't be duplicate cities in the path.
+4. Crossover picks part of the path from the first path and then selects cities from the second, again no duplicates allowed.
 
 The rest of the code is mostly cosmetic changes and reporting methods.
 
