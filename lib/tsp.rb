@@ -136,6 +136,7 @@ class TSP
 			a[:height] ||=800
 			a[:padding] ||= 20
 			a[:hmirror] ||= false
+			a[:vmirror] ||= false
 
 			Shoes.app tsp: self, width: a[:width], height: a[:height] do
 				wp = a[:width] - a[:padding]
@@ -151,12 +152,14 @@ class TSP
 					x = c[ch][1].scale(wmin, wmax, a[:padding], wp)
 					y = c[ch][2].scale(hmin, hmax, a[:padding], hp)
 					x = wp - x if a[:hmirror]
+					y = hp - y if a[:vmirror]
 					para c[ch][0], left: x - 10, top: y - 22
 					oval x - 5, y - 5, 10, 10
 					unless i == 0
 						x2 = c[ch2][1].scale(wmin, wmax, a[:padding], wp)
 						y2 = c[ch2][2].scale(hmin, hmax, a[:padding], hp)
 						x2 = wp - x2 if a[:hmirror]
+						y2 = hp - y2 if a[:vmirror]
 						line x, y, x2, y2, stroke: blue
 					end
 					ch2 = ch

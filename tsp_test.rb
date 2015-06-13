@@ -21,7 +21,7 @@ def loop_over a={}
 		e = test a
 	end
 	hr
-	e.draw_graph_paths width: 800, height: 600,  hmirror: a[:hmirror], padding: 30 if a[:graph]
+	e.draw_graph_paths width: 800, height: 600, hmirror: a[:hmirror], vmirror: a[:vmirror], padding: 30 if a[:graph]
 	return e
 end
 
@@ -36,11 +36,11 @@ def cities opt, graph
 				 L,Las_Vegas,115.17,36.12;k,Kansas_city,94.57,39.09;M,Miami,80.20,25.77;s,San_Fran,122.41,37.78;a,Dallas,96.79,32.77;
 			 	 n,Nashville,86.78,36.16;e,Detroit,83.04,42.33;p,Phoneix,112.06,33.45;D,Denver,104.99,39.73'
 
-	loop_over cities: cities, pool_size: 30, graph: graph if opt == '1'
+	loop_over cities: cities, pool_size: 30, graph: graph, vmirror: true, hmirror: true  if opt == '1'
 
 	#Now add sort of a loop in California
 	cities += ';S,Sacramento,121.46,38.55;f,Fresno,119.76,36.75;A,San_jose,121.88,37.33;C,Carson_city,119.75,39.16'
-	loop_over cities: cities, pool_size: 30, graph: graph if opt == '2'
+	loop_over cities: cities, pool_size: 30, graph: graph, vmirror: true, hmirror: true  if opt == '2'
 
 	#Now try with randomly generated cities
 	if opt == '3' or opt.nil?
