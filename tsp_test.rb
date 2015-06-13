@@ -10,43 +10,45 @@ def test a={}
 	e.iterate
 	#e.list_distances
 	e.display_best_solution
+	return e
 end
 
 def loop_over a={}
+	e = nil
 	for i in (1000 .. 10000).step(1000)
 		a[:iters] = i
 		puts "Total iterations> #{i} ============================================"
-		test a
+		e = test a
 	end
-end
-
-def draw_graph_paths
-	begin
-		require 'green_shoes'
-		puts "> Drawing the graph ..."
-	rescue LoadError
-		puts "lib not installed"
-	end
+	hr
+	e.draw_graph_paths width: 800, height: 600,  hmirror: a[:hmirror], padding: 30 if a[:graph]
+	return e
 end
 
 #FORMAT FOR CITIES string is :
 # mnemonic,name,longitude,latitude;.....
 
-#first try all cities spread over USA, should be easy to figure out if the correct tour was picked
-cities = 'd,DC,38.90,77.01;l,Los_Angeles,34.05,118.25;c,Chicago,41.83,87.68;m,Memphis,35.11,89.97;h,Houston,29.76,95.36;
-			 L,Las_Vegas,36.12,115.17;k,Kansas_city,39.09,94.57;M,Miami,25.77,80.20;s,San_Fran,37.78,122.41;a,Dallas,32.77,96.79;
-		 	 n,Nashville,36.16,86.78;e,Detroit,42.33,83.04;p,Phoneix,33.45,112.06;D,Denver,39.73,104.99'
-#loop_over cities: cities, pool_size: 30
+def cities opt, graph
 
-hr
+	p opt, graph
+	#first try all cities spread over USA, should be easy to figure out if the correct tour was picked
+	cities = 'd,DC,77.01,38.90;l,Los_Angeles,118.25,34.05;c,Chicago,87.68,41.83;m,Memphis,89.97,35.11;h,Houston,95.36,29.76;
+				 L,Las_Vegas,115.17,36.12;k,Kansas_city,94.57,39.09;M,Miami,80.20,25.77;s,San_Fran,122.41,37.78;a,Dallas,96.79,32.77;
+			 	 n,Nashville,86.78,36.16;e,Detroit,83.04,42.33;p,Phoneix,112.06,33.45;D,Denver,104.99,39.73'
 
-#Now add sort of a loop in California
-cities += ';S,Sacramento,38.55,121.46;f,Fresno,36.75,119.76;A,San_jose,37.33,121.88;C,Carson_city,39.16,119.75'
-#loop_over cities: cities, pool_size: 30
+	loop_over cities: cities, pool_size: 30, graph: graph if opt == '1'
 
-hr
+	#Now add sort of a loop in California
+	cities += ';S,Sacramento,121.46,38.55;f,Fresno,119.76,36.75;A,San_jose,121.88,37.33;C,Carson_city,119.75,39.16'
+	loop_over cities: cities, pool_size: 30, graph: graph if opt == '2'
 
-#Now try with randomly generated cities
-cities = nil
-loop_over cities: cities, pool_size: 30
+	#Now try with randomly generated cities
+	if opt == '3' or opt.nil?
+		cities = nil
+		loop_over cities: cities, pool_size: 30, graph: graph
+	end
+
+end
+
+cities ARGV[0], true
 

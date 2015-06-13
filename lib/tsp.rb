@@ -1,5 +1,11 @@
 #!/usr/bin/env ruby
 
+class Numeric
+	def scale(from_min, from_max, to_min, to_max)
+		((to_max - to_min) * (self - from_min)) / (from_max - from_min) + to_min
+	end
+end
+
 #calculate DIRECT distance given longitude and latidude, keeping in mind the curvature of Earth
 # Oto Brglez : stackoverflow.com
 def distance loc1, loc2
@@ -42,7 +48,7 @@ def mate str1, str2
 	j = 0 #index in str2
 	for i in 0 .. new_str.size-1
 		if new_str[i] == ' ' #no data yet
-			while new_str.index str2[j]; j += 1 end
+			j += 1 while new_str.index str2[j]
 			new_str[i] = str2[j]
 			j += 1
 		end
@@ -51,7 +57,7 @@ def mate str1, str2
 end
 
 class TSP
-	attr_accessor :pool
+	attr_accessor :pool, :best, :cities, :mnemonics
 
 	def initialize a={}
 		@pool = []
@@ -82,18 +88,18 @@ class TSP
 
 	#total number of paths : (n-1)!/2
 	def display_best_solution
-		best = @pool[-1]
+		@best = @pool[-1]
 		str = ''
-		best[:data].split('').each do |ch|
+		@best[:data].split('').each do |ch|
 			str += @cities[ch][0] + ' => '
 		end
 
 		puts
-		puts "> Best path : #{best[:data]}, length : #{best[:fitness].to_i} km"
+		puts "> Best path : #{@best[:data]}, length : #{@best[:fitness].to_i} km"
 		puts "> Route :\n" + str[0 .. -4]
 		puts
 
-		return best
+		return @best
 	end
 
 	def list_distances
@@ -107,7 +113,7 @@ class TSP
 		end
 	end
 
-	def gen_random_cities cnt=20, height=100, width=100
+	def gen_random_cities cnt=30, height=100, width=100
 		chars = [ *('a' .. 'z'), *('A' .. 'Z')]
 		for i in 1 .. cnt
 			name = 'C' + i.to_s
@@ -120,6 +126,49 @@ class TSP
 	def random_path size=@mnemonics.size
 		return @mnemonics.shuffle[0 .. size-1].join('')
 	end
+
+	def draw_graph_paths a={}
+
+		begin
+			require 'green_shoes'
+			puts "> Drawing the graph ..."
+			a[:width] ||= 800
+			a[:height] ||=800
+			a[:padding] ||= 20
+			a[:hmirror] ||= false
+
+			Shoes.app tsp: self, width: a[:width], height: a[:height] do
+				wp = a[:width] - a[:padding]
+				hp = a[:height] - a[:padding]
+				c = tsp.cities
+				wmax = c.map {|m| m[1][1] }.max
+				wmin = c.map {|m| m[1][1] }.min
+				hmax = c.map {|m| m[1][2] }.max
+				hmin = c.map {|m| m[1][2] }.min
+
+				ch2 = ''
+				tsp.best[:data].split('').each_with_index do |ch,i|
+					x = c[ch][1].scale(wmin, wmax, a[:padding], wp)
+					y = c[ch][2].scale(hmin, hmax, a[:padding], hp)
+					x = wp - x if a[:hmirror]
+					para c[ch][0], left: x - 10, top: y - 22
+					oval x - 5, y - 5, 10, 10
+					unless i == 0
+						x2 = c[ch2][1].scale(wmin, wmax, a[:padding], wp)
+						y2 = c[ch2][2].scale(hmin, hmax, a[:padding], hp)
+						x2 = wp - x2 if a[:hmirror]
+						line x, y, x2, y2, stroke: blue
+					end
+					ch2 = ch
+				end
+
+			end
+		rescue LoadError
+			puts "green_shoes lib not installed, cant draw graph of the path."
+		end
+	end
+
+
 
 	#using the @cities coord calc the traveling path, smaller better
 	def fitness path
@@ -138,11 +187,9 @@ class TSP
 		@pool.push( { data: str, fitness: fit_score } )
 	end
 
-	def gen_pool len
+	def gen_pool size
 		@pool = []
-		for i in 1 .. len
-			add2pool random_path
-		end
+		size.times { add2pool random_path }
 	end
 
 	def display_pool

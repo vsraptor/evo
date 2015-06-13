@@ -68,9 +68,15 @@ The main differences are the following :
 
 The rest of the code is mostly cosmetic changes and reporting methods.
 
-In tsp_test.rb uncomment loop_over() statements to see the two examples with USA cities.
+#### Run the tests
 
-**TODO:** draw the paths, so we can visually see what is the solution.
+There are 3 tests, you can run, just run test_tsp.rb with number 1,2 or 3 (default if no arg provided) as argument.
+Like this :
+
+``` ruby test_tsp.rb 2 ```
+
+Option 3 is the default. The app generates random cities and tries to find the shortest path. If you have green_shoes lib installed it
+will also draw a graph of the path.
 
 **Observations:** When I increase the gene pool it seems that the solution becomes worse. The reason I think is that now I need to increase the number of iterations to achieve similar results. Smaller number of genes will search trough smaller and more narrow part of the whole search space.
 That can be both good or bad.
