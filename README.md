@@ -61,23 +61,29 @@ The code structure is almost the same as the one we used for String-target examp
 
 The main differences are the following :
 
-1. There is no TARGET we try to find, we just search thought this humongous search space guided only by the fitness function.
+1. There is no TARGET that we are tring to find, we just search thought this humongous search space guided only by the fitness function.
 2. Fitness function is the primary tool by which we direct the algorithm by calculating the distance between cities. Shortest path wins.
-3. Mutation just swaps two characters (instead of introducing new character : Example 1). The reason is that there can't be duplicate cities in the path.
-4. Crossover picks part of the path from the first path and then selects cities from the second, again no duplicates allowed.
+3. Mutation just swaps two characters (instead of introducing new character as in Example 1). The reason is that there can't be duplicate cities in the path.
+4. Crossover picks part of the path from the first path and then selects cities from the second, because again no duplicates allowed.
 
 The rest of the code is mostly cosmetic changes and reporting methods.
 
 #### Run the tests
 
-There are 3 tests, you can run, just run test_tsp.rb with number 1,2 or 3 (default if no arg provided) as argument.
-Like this :
+There are 3 tests, available in test_tsp.rb :
+
+1. Basic USA cities
+2. Extended USA cities
+3  Generate random cities (default if no arg provided).
+
+You can run it like this :
 
 ``` ruby test_tsp.rb 2 ```
 
-Option 3 is the default. The app generates random cities and tries to find the shortest path. If you have green_shoes lib installed it
-will also draw a graph of the path.
+If you have green_shoes lib installed the app will also draw a graph of the path.
 
 **Observations:** When I increase the gene pool it seems that the solution becomes worse. The reason I think is that now I need to increase the number of iterations to achieve similar results. Smaller number of genes will search trough smaller and more narrow part of the whole search space.
 That can be both good or bad.
+
+Please try to run experiments with more than 10_000 iterartions.
 

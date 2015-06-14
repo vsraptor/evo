@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+#add a method to Numeric class
 class Numeric
 	def scale(from_min, from_max, to_min, to_max)
 		((to_max - to_min) * (self - from_min)) / (from_max - from_min) + to_min
@@ -48,9 +49,9 @@ def mate str1, str2
 	j = 0 #index in str2
 	for i in 0 .. new_str.size-1
 		if new_str[i] == ' ' #no data yet
-			j += 1 while new_str.index str2[j]
+			j += 1 while new_str.index str2[j] #skip until 'repetitions'-end
 			new_str[i] = str2[j]
-			j += 1
+			j += 1 #move to next char
 		end
 	end
 	return new_str
@@ -127,34 +128,52 @@ class TSP
 		return @mnemonics.shuffle[0 .. size-1].join('')
 	end
 
+
 	def draw_graph_paths a={}
 
 		begin
 			require 'green_shoes'
 			puts "> Drawing the graph ..."
 			a[:width] ||= 800
-			a[:height] ||=800
+			a[:height] ||= 600
 			a[:padding] ||= 20
 			a[:hmirror] ||= false
 			a[:vmirror] ||= false
 
 			Shoes.app tsp: self, width: a[:width], height: a[:height] do
+
+				def grid a={}
+					a = { vfrom: 0, vto: 100, vstep: 10, hfrom: 0, hto: 100, hstep: 10 }.merge(a)
+					stroke gray
+					( a[:vfrom] .. a[:vto] ).step(a[:vstep]).each do |v|
+						line v, a[:hfrom], v, a[:hto]
+					end
+					( a[:hfrom] .. a[:hto] ).step(a[:hstep]).each do |h|
+						line a[:vfrom], h, a[:vto], h
+					end
+				end
+
+				c = tsp.cities
+				#used for scaling
 				wp = a[:width] - a[:padding]
 				hp = a[:height] - a[:padding]
-				c = tsp.cities
 				wmax = c.map {|m| m[1][1] }.max
 				wmin = c.map {|m| m[1][1] }.min
 				hmax = c.map {|m| m[1][2] }.max
 				hmin = c.map {|m| m[1][2] }.min
 
+				grid  vto: a[:width],  vstep: ((wmax-wmin)*0.1).scale(0,wmax-wmin,0, a[:width]),
+						hto: a[:height], hstep: ((hmax-hmin)*0.1).scale(0,hmax-hmin,0, a[:height])
+
+				#draw the cities and the path
 				ch2 = ''
 				tsp.best[:data].split('').each_with_index do |ch,i|
 					x = c[ch][1].scale(wmin, wmax, a[:padding], wp)
 					y = c[ch][2].scale(hmin, hmax, a[:padding], hp)
 					x = wp - x if a[:hmirror]
 					y = hp - y if a[:vmirror]
-					para c[ch][0], left: x - 10, top: y - 22
-					oval x - 5, y - 5, 10, 10
+					para c[ch][0], left: x - 10, top: y - 22 #city name
+					oval x - 5, y - 5, 10, 10 #city spot
 					unless i == 0
 						x2 = c[ch2][1].scale(wmin, wmax, a[:padding], wp)
 						y2 = c[ch2][2].scale(hmin, hmax, a[:padding], hp)
@@ -245,7 +264,7 @@ class TSP
 		raise "Please generate or provide city list" if @cities.size == 0
 		for i in 1 .. iterations
 			evolve
-			if not @display_every.zero?
+			unless @display_every.zero?
 				display_pool if iter % @display_every == 0
 			end
 		end

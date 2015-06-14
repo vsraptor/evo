@@ -15,7 +15,7 @@ end
 
 def loop_over a={}
 	e = nil
-	for i in (1000 .. 10000).step(1000)
+	for i in (1000 .. 10_000).step(1000)
 		a[:iters] = i
 		puts "Total iterations> #{i} ============================================"
 		e = test a
