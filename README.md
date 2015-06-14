@@ -87,3 +87,6 @@ That can be both good or bad.
 
 Please try to run experiments with more than 10_000 iterartions.
 
+----
+
+> github code browser substities 8 spaces for every TAB and the code look too dispersed. You can use a trick to change how many spaces a TAB will occupy. Just add ?ts=2 at the end of the URL or whatever number you feel comfortable with and everything will be dandy.
