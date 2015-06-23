@@ -4,7 +4,7 @@
 CHARS = [ *('a' .. 'z'), *('A' .. 'Z'), ' ']
 
 def random_char
-	return CHARS[rand(CHARS.size-1)]
+	return CHARS[rand(CHARS.size)]
 end
 
 #return random variation for mutation

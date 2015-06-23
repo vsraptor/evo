@@ -265,7 +265,7 @@ class TSP
 		for i in 1 .. iterations
 			evolve
 			unless @display_every.zero?
-				display_pool if iter % @display_every == 0
+				display_pool if i % @display_every == 0
 			end
 		end
 	end
