@@ -181,3 +181,6 @@ instead it is very random.
 On the other hand if we put more intelligence into the crossover we are deviating from the idea that we want to explore the solutions w/o 
 pre-knowledge of the sub-search-space where the right solution is.
 
+----
+
+> github code browser substities 8 spaces for every TAB and the code look too dispersed. You can use a trick to change how many spaces a TAB will occupy. Just add ?ts=2 at the end of the URL or whatever number you feel comfortable with and everything will be dandy.
