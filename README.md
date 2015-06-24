@@ -115,15 +115,15 @@ to test this application.
 
 This evolution process has much more knobs that can be tweaked to get different result.
 
-- vars : provide an array of variable names to be used in the expressions.
-- pool_size : how many chromosomes will be used. Smaller values means faster computation and faster mutation, but explores smaller search space.
-- max_depth : specifies up to how many level "deep" expression trees will be, when generating the initial random pool.
-- drop_node_count : when new tree-expr is created by mating&mutation if it exceeds this "depth" part of the expression is dropped, to lower its complexity.
-- max_children : In comparison with previous examples, in the current one in one evolution iteration the parents may have multiple offspring.
+- *vars* : provide an array of variable names to be used in the expressions.
+- *pool_size* : how many chromosomes will be used. Smaller values means faster computation and faster mutation, but explores smaller search space.
+- *max_depth* : specifies up to how many level "deep" expression trees will be, when generating the initial random pool.
+- *drop_node_count* : when new tree-expr is created by mating&mutation if it exceeds this "depth" part of the expression is dropped, to lower its complexity.
+- *max_children* : In comparison with previous examples, in the current one in one evolution iteration the parents may have multiple offspring.
 This is closer to what happen in real biological world, where animals have much more children that the environment can bare, this way give better survival of the genes. Also in the "real"-evolution the variations comes primary by crossover/mating rather than mutation.
-- max_mate_pairs : In conjunction with the previous option, I'm trying to make every evolution step "heavier" by allowing multiple parents to mate during single evolutionary iteration.
-- min_fitness : At least what fitness is considered a plausible solution to our problem.
-- do_fun: If true then math function as exp(), log2() and such will be used. This is experimental option and was not my goal to use functions when I started this experiment.
+- *max_mate_pairs* : In conjunction with the previous option, I'm trying to make every evolution step "heavier" by allowing multiple parents to mate during single evolutionary iteration.
+- *min_fitness* : At least what fitness is considered a plausible solution to our problem.
+- *do_fun* : If true then math function as exp(), log2() and such will be used. This is experimental option and was not my goal to use functions when I started this experiment.
 
 Remember evolutionary process does not guarantee the best solution.
 
